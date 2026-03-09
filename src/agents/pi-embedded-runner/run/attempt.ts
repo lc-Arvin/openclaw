@@ -1288,6 +1288,39 @@ export async function runEmbeddedAttempt(
         activeSession.agent.streamFn = cacheTrace.wrapStreamFn(activeSession.agent.streamFn);
       }
 
+      // Add logging for model requests
+      {
+        const inner = activeSession.agent.streamFn;
+        activeSession.agent.streamFn = (model, context, options) => {
+          console.log('[Model Request]', {
+            provider: model?.provider,
+            model: model?.id,
+            baseUrl: model?.baseUrl,
+            api: model?.api,
+            messageCount: Array.isArray(context.messages) ? context.messages.length : 'unknown',
+            timestamp: new Date().toISOString(),
+          });
+          if (Array.isArray(context.messages) && context.messages.length > 0) {
+            context.messages.slice(0, 2).forEach((msg, i) => {
+              console.log(`[Model Request] message ${i}: role=${msg.role} content=${typeof msg.content === 'string' ? msg.content.substring(0, 100) : typeof msg.content}`);
+            });
+          }
+          // Wrap onPayload to log response
+          const originalOnPayload = options?.onPayload;
+          const chunks: unknown[] = [];
+          const wrappedOptions = {
+            ...options,
+            onPayload: (payload: unknown) => {
+              chunks.push(payload);
+              console.log('[Model Response] chunk:', JSON.stringify(payload).substring(0, 200));
+              originalOnPayload?.(payload);
+            },
+          };
+          const result = inner(model, context, wrappedOptions);
+          return result;
+        };
+      }
+
       // Copilot/Claude can reject persisted `thinking` blocks (e.g. thinkingSignature:"reasoning_text")
       // on *any* follow-up provider call (including tool continuations). Wrap the stream function
       // so every outbound request sees sanitized messages.
