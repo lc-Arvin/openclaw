@@ -7,11 +7,14 @@ This document describes how to enable detailed logging of model requests and res
 The following changes have been made to add model request/response logging:
 
 1. **Modified `src/agents/pi-embedded-runner/run/attempt.ts`**:
-   - Added logging wrapper around the `streamFn` function that logs:
-     - Model provider, ID, base URL, and API type
-     - Message count in the context
-     - First 2 messages (truncated to 100 characters)
-     - Response chunks (truncated to 200 characters)
+    - Added logging wrapper around the `streamFn` function that logs:
+      - Model provider, ID, base URL, and API type
+      - Network information (protocol, hostname, port, pathname)
+      - Proxy environment variables (HTTP_PROXY, HTTPS_PROXY, NO_PROXY)
+      - TLS indicator (HTTPS vs HTTP)
+      - Message count in the context
+      - First 2 messages (truncated to 100 characters)
+      - Response chunks (truncated to 200 characters)
 
 ## Log Output Format
 
@@ -24,7 +27,15 @@ When a model request is made, you'll see output like:
   baseUrl: 'https://api.openai.com/v1',
   api: 'openai-completions',
   messageCount: 5,
-  timestamp: '2026-03-09T23:45:00.000Z'
+  timestamp: '2026-03-09T23:45:00.000Z',
+  network: {
+    protocol: 'https:',
+    hostname: 'api.openai.com',
+    port: 443,
+    pathname: '/v1'
+  },
+  proxy: 'none',
+  tlsIndicator: 'TLS enabled'
 }
 [Model Request] message 0: role=user content=Hello...
 [Model Request] message 1: role=assistant content=Hi there...

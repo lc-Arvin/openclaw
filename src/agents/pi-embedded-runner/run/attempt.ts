@@ -1292,6 +1292,29 @@ export async function runEmbeddedAttempt(
       {
         const inner = activeSession.agent.streamFn;
         activeSession.agent.streamFn = (model, context, options) => {
+          // Parse network information from baseUrl
+          let networkInfo = {};
+          try {
+            if (model?.baseUrl) {
+              const url = new URL(model.baseUrl);
+              networkInfo = {
+                protocol: url.protocol,
+                hostname: url.hostname,
+                port: url.port || (url.protocol === 'https:' ? 443 : url.protocol === 'http:' ? 80 : 'unknown'),
+                pathname: url.pathname,
+              };
+            }
+          } catch (e) {
+            // ignore
+          }
+          
+          // Check for proxy environment variables
+          const proxyEnv = {
+            httpProxy: process.env.HTTP_PROXY || process.env.http_proxy,
+            httpsProxy: process.env.HTTPS_PROXY || process.env.https_proxy,
+            noProxy: process.env.NO_PROXY || process.env.no_proxy,
+          };
+          
           console.log('[Model Request]', {
             provider: model?.provider,
             model: model?.id,
@@ -1299,6 +1322,9 @@ export async function runEmbeddedAttempt(
             api: model?.api,
             messageCount: Array.isArray(context.messages) ? context.messages.length : 'unknown',
             timestamp: new Date().toISOString(),
+            network: networkInfo,
+            proxy: Object.values(proxyEnv).some(v => v) ? proxyEnv : 'none',
+            tlsIndicator: model?.baseUrl?.startsWith('https:') ? 'TLS enabled' : 'plain HTTP',
           });
           if (Array.isArray(context.messages) && context.messages.length > 0) {
             context.messages.slice(0, 2).forEach((msg, i) => {
