@@ -35,6 +35,8 @@ const ensureSupportedNodeVersion = () => {
 
 ensureSupportedNodeVersion();
 
+console.log('[OpenClaw] Running LOCAL development version - model request logging enabled');
+
 // https://nodejs.org/api/module.html#module-compile-cache
 if (module.enableCompileCache && !process.env.NODE_DISABLE_COMPILE_CACHE) {
   try {
