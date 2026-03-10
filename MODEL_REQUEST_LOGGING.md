@@ -36,7 +36,18 @@ When a model request is made, you'll see output like:
 ### Prerequisites
 
 - Node.js 22+
-- pnpm package manager
+- pnpm package manager (install via one of the following methods):
+
+  ```bash
+  # Using npm (if Node.js is installed)
+  npm install -g pnpm
+  
+  # Using corepack (comes with Node.js 16+)
+  corepack enable pnpm
+  
+  # Using bun
+  bun install -g pnpm
+  ```
 
 ### Build Commands
 
