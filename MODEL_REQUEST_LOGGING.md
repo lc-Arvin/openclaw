@@ -191,3 +191,33 @@ pnpm dev gateway run
 - Response chunks are logged as they arrive (streaming mode)
 - For complete response logging, you may need to collect all chunks (current implementation logs each chunk individually)
 - `localhost` and `127.0.0.1` refer to the same service on Windows
+
+## TLS and Network Diagnostics
+
+The enhanced logging now includes basic network information:
+
+- **Protocol** (http/https)
+- **Hostname** and **port**
+- **Pathname** from the base URL
+- **Proxy environment variables** (HTTP_PROXY, HTTPS_PROXY, NO_PROXY)
+- **TLS indicator** (whether HTTPS is used)
+
+For more detailed TLS information (TLS version, cipher suite, certificate details), you can enable Node.js debug logging:
+
+```bash
+# Enable Node.js TLS debugging (produces verbose output)
+set NODE_DEBUG=tls,ssl
+# On Unix/macOS:
+# export NODE_DEBUG=tls,ssl
+
+# Run OpenClaw with debug logging
+pnpm dev gateway run
+```
+
+This will output low-level TLS handshake details to stderr, showing:
+- TLS protocol version (TLS 1.2, TLS 1.3)
+- Cipher suite negotiation
+- Certificate chain information
+- Secure connection establishment
+
+Note: This generates **very verbose** output and should only be used for diagnostic purposes.
