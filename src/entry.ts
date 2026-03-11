@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+// ===== DEBUG BREAKPOINT: Gateway entry point =====
+console.log('[OPENCLAW] Entry point reached - Gateway starting...');
+// Set breakpoint on the line above to debug from the start
+
 import { spawn } from "node:child_process";
 import { enableCompileCache } from "node:module";
 import process from "node:process";

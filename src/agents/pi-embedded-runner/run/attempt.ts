@@ -1313,6 +1313,11 @@ export async function runEmbeddedAttempt(
             httpProxy: process.env.HTTP_PROXY || process.env.http_proxy,
             httpsProxy: process.env.HTTPS_PROXY || process.env.https_proxy,
             noProxy: process.env.NO_PROXY || process.env.no_proxy,
+            nodeEnv: process.env.NODE_ENV,
+            // SSL related
+            NODE_TLS_REJECT_UNAUTHORIZED: process.env.NODE_TLS_REJECT_UNAUTHORIZED,
+            SSL_CERT_DIR: process.env.SSL_CERT_DIR,
+            SSL_CERT_FILE: process.env.SSL_CERT_FILE,
           };
           
           console.log('[Model Request]', {
@@ -1325,6 +1330,11 @@ export async function runEmbeddedAttempt(
             network: networkInfo,
             proxy: Object.values(proxyEnv).some(v => v) ? proxyEnv : 'none',
             tlsIndicator: model?.baseUrl?.startsWith('https:') ? 'TLS enabled' : 'plain HTTP',
+            sslEnv: {
+              NODE_TLS_REJECT_UNAUTHORIZED: process.env.NODE_TLS_REJECT_UNAUTHORIZED,
+              SSL_CERT_DIR: process.env.SSL_CERT_DIR,
+              SSL_CERT_FILE: process.env.SSL_CERT_FILE,
+            },
           });
           if (Array.isArray(context.messages) && context.messages.length > 0) {
             context.messages.slice(0, 2).forEach((msg, i) => {

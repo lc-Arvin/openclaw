@@ -57,12 +57,14 @@ export default defineConfig([
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   {
     entry: "src/entry.ts",
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   {
     // Ensure this module is bundled as an entry so legacy CLI shims can resolve its exports.
@@ -70,12 +72,14 @@ export default defineConfig([
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   {
     entry: "src/infra/warning-filter.ts",
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   {
     // Keep sync lazy-runtime channel modules as concrete dist files.
@@ -94,6 +98,7 @@ export default defineConfig([
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   ...pluginSdkEntrypoints.map((entry) => ({
     entry: `src/plugin-sdk/${entry}.ts`,
@@ -101,17 +106,20 @@ export default defineConfig([
     env,
     fixedExtension: false,
     platform: "node" as const,
+    sourcemap: true,
   })),
   {
     entry: "src/extensionAPI.ts",
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
   {
     entry: ["src/hooks/bundled/*/handler.ts", "src/hooks/llm-slug-generator.ts"],
     env,
     fixedExtension: false,
     platform: "node",
+    sourcemap: true,
   },
 ]);

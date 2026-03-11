@@ -1,0 +1,84 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug OpenClaw Dev",
+            "program": "${workspaceFolder}/dist/entry.js",
+            "args": [
+                "--dev",
+                "gateway"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopOnEntry": true,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ],
+            "preLaunchTask": "build"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug OpenClaw CLI",
+            "program": "${workspaceFolder}/scripts/run-node.mjs",
+            "args": [],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug OpenClaw Gateway Watch",
+            "program": "${workspaceFolder}/scripts/watch-node.mjs",
+            "args": [
+                "gateway",
+                "--force"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug TypeScript with tsx",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["exec", "tsx"],
+            "program": "${workspaceFolder}/src/entry.ts",
+            "args": [
+                "--dev",
+                "gateway"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMaps": true,
+            "outFiles": [],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ]
+        }
+    ]
+}
